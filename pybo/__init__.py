@@ -9,7 +9,9 @@ from sqlalchemy import MetaData
 # config.py를 읽기 위한 config 라이브러리 임포트
 import config
 
-from flaskext.markdown import Markdown
+# from flaskext.markdown import Markdown 이거 제거
+import markdown
+from markupsafe import Markup
 
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -50,7 +52,15 @@ def create_app():
     from .filter import format_datetime
     app.jinja_env.filters['datetime'] = format_datetime
     
-    # markdown
-    Markdown(app, extensions=['nl2br', 'fenced_code'])
+    # # markdown
+    # Markdown(app, extensions=['nl2br', 'fenced_code'])
+
+   # [수정된 부분] markdown 직접 필터 등록
+    @app.template_filter('markdown')
+    def render_markdown(text):
+        if not text:
+            return ""
+        # Markup()으로 감싸서 안전한 HTML임을 플라스크에 전달
+        return Markup(markdown.markdown(text, extensions=['nl2br', 'fenced_code']))
     
     return app
