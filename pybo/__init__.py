@@ -6,9 +6,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from sqlalchemy import MetaData
 
-# config.py를 읽기 위한 config 라이브러리 임포트
-import config
-
 # from flaskext.markdown import Markdown 이거 제거
 import markdown
 from markupsafe import Markup
@@ -26,9 +23,7 @@ migrate = Migrate()
 # create_app은 애플리케이션 팩토리 라고함(용어숙달요망)
 def create_app():
     app = Flask(__name__)
-
-    # config파일을 읽을 수 있게 app을 변조
-    app.config.from_object(config)
+    app.config.from_envvar('APP_CONFIG_FILE')
 
     # 하기 두 줄이 app과 db,migrate를 연결하는 코드
     db.init_app(app)
