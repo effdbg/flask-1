@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for
+from flask import Blueprint, url_for, current_app
 
 from flask import render_template
 from werkzeug.utils import redirect
@@ -18,5 +18,5 @@ def hello_pybo():
 # 루트경로로 접근 시 리턴되는 템플릿
 @bp.route('/')
 def index():
-    3/0
+    current_app.logger.info("INFO 레벨로 출력")
     return redirect(url_for('question._list'))
