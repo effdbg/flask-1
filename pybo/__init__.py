@@ -10,6 +10,8 @@ from sqlalchemy import MetaData
 import markdown
 from markupsafe import Markup
 
+from flask import render_template
+
 naming_convention = {
     "ix": 'ix_%(column_0_label)s',
     "uq": "uq_%(table_name)s_%(column_0_name)s",
@@ -57,5 +59,12 @@ def create_app():
             return ""
         # Markup()으로 감싸서 안전한 HTML임을 플라스크에 전달
         return Markup(markdown.markdown(text, extensions=['nl2br', 'fenced_code']))
+
+    # 오류페이지
+    app.register_error_handler(404, page_not_found)
     
     return app
+
+
+def page_not_found(e):
+    return render_template('404.html'), 404
