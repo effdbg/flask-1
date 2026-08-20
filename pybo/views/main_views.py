@@ -18,4 +18,5 @@ def hello_pybo():
 # 루트경로로 접근 시 리턴되는 템플릿
 @bp.route('/')
 def index():
+    3/0
     return redirect(url_for('question._list'))
